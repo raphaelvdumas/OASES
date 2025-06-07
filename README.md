@@ -44,10 +44,11 @@ pacman -S mingw-w64-i686-gcc mingw-w64-i686-gfortran \
 ```
 
 ### 2. Clone OASES Repository
-```bash
-git clone https://example.com/oases.git
-cd oases
+```bash 
+git clone https://github.com/raphaelvdumas/OASES
+cd OASES
 ```
+
 ### 3. Build Instructions
 
 #### For Windows 64-bit:
