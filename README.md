@@ -4,7 +4,7 @@
 
 **I had a lot of trouble installing this base package on Windows, so I decided to create a friendly installation guide to help others.**
 
-## Recommended: Using OASES on Windows (Portable Edition)
+## Using OASES Portable Edition
 
 For ease of use, you can run OASES 3.1 directly on Windows by using the portable edition. Follow these steps:
 
@@ -14,41 +14,57 @@ For ease of use, you can run OASES 3.1 directly on Windows by using the portable
 
 3. **Update your PATH environment variable** to include the `bin` folder from the extracted folder. This allows you to run any OASES module directly from `cmd` or `PowerShell` (e.g., `oast`, `oasr`, etc.) using the syntax provided in the official documentation.
 
-**Note**: The portable edition is built using Windows 11 with MSYS2 (mingw32 and mingw64) and GCC. The source code is located in the `core-oases` branch of this repository.
+**Note**: The portable edition is built using Windows 11 with MSYS2 (mingw32 and mingw64) and GCC, see below.
 
 **Warning**: This portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
 
 _Last successful run: March 19, 2025_
 
-## Alternative: Building OASES on WSL (Not Recommended)
+## Building OASES Portable Edition
 
-While installing OASES 3.1 on Windows using WSL is possible, it is more complex and may encounter various issues. If you choose this method, follow these instructions:
+You can build OASES using **MSYS2** and **Ninja** on **Windows 11 (x86_64 or i686)**.
 
-1. **Download** this repository.
+### 1. Prerequisites
+- [Download MSYS2](https://www.msys2.org/) and install it.
+- Open the MSYS2 shell and install required tools:
+```bash
+# Update MSYS2 packages (do this twice)
+pacman -Syu   # Then close and reopen shell
+pacman -Su    # Then proceed
 
-2. **Refer to the installation guide** in the `OASES 3.1 - Installation Guide.pdf` file for detailed steps.
-
-### Required Software
-1. [Ubuntu](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab) from the Microsoft Store (developed by [Canonical](https://canonical.com/)).
-   
-2. [VcXsrv](https://vcxsrv.com/) to enable the graphical interface between Ubuntu and Windows.
-
-### Dependencies
-You’ll need the following dependencies installed:
-```
-    cmake, gcc, g++, gfortran, csh, libx11-dev, plotmtv
-```
-### Running OASES 3.1
-
-After installation, you can run an example from the `tloss` folder using the `oast` module. For example:
-```
-  oast ~/oases-public/tloss/pekeris 
-```
-and then plot the transmission loss with the ```cplot``` module
-```
-  cplot ~/oases-public/tloss/pekeris 
+# Install 64-bit toolchain and build tools
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gfortran \
+          mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
 ```
 
-Additional information about using OASES and its modules can be found in the **OASES 3.1 User Guide** in this repository.
+For 32-bit builds, use:
+```bash
+pacman -S mingw-w64-i686-gcc mingw-w64-i686-gfortran \
+          mingw-w64-i686-cmake mingw-w64-i686-ninja
+```
 
-_Last successful installation: december 14, 2019_
+### 2. Clone OASES Repository
+```bash
+git clone https://example.com/oases.git
+cd oases
+```
+### 3. Build Instructions
+
+#### For Windows 64-bit:
+```bash
+cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran
+cmake --build build
+cmake --install build
+```
+
+#### For Windows 32-bit:
+```bash
+cmake -G Ninja -B build -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc \
+                            -DCMAKE_Fortran_COMPILER=i686-w64-mingw32-gfortran
+cmake --build build
+cmake --install build
+```
+### 4. Output
+After installation, a `release/` folder will contain the final executables with the DLL dependencies automatically copied.
+
+
