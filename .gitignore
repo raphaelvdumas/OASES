@@ -12,4 +12,4 @@
 *.fdb_latexmk
 /python/
 /build/
-# /release/
+/release/

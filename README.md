@@ -20,52 +20,40 @@ For ease of use, you can run OASES 3.1 directly on Windows by using the portable
 
 _Last successful run: March 19, 2025_
 
-## Building OASES Portable Edition
+## Building OASES Portable Edition (x64) on Windows 11 
+You can build OASES using **MSYS2** on **Windows 11** with the 64-bit GCC and Fortran toolchain. 
 
-You can build OASES using **MSYS2** and **Ninja** on **Windows 11 (x86_64 or i686)**.
-
-### 1. Prerequisites
-- [Download MSYS2](https://www.msys2.org/) and install it.
-- Open the MSYS2 shell and install required tools:
-```bash
-# Update MSYS2 packages (do this twice)
-pacman -Syu   # Then close and reopen shell
-pacman -Su    # Then proceed
-
-# Install 64-bit toolchain and build tools
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gfortran \
-          mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
-```
-
-For 32-bit builds, use:
-```bash
-pacman -S mingw-w64-i686-gcc mingw-w64-i686-gfortran \
-          mingw-w64-i686-cmake mingw-w64-i686-ninja
-```
-
-### 2. Clone OASES Repository
+### 1. Install MSYS2 and Required Tools 
+- [Download MSYS2](https://www.msys2.org/) and install it. 
+- Open the **MSYS2 MINGW64** shell. 
+- Update the package manager and install required tools: 
 ```bash 
-git clone https://github.com/raphaelvdumas/OASES
-cd OASES
-```
+# First-time update (may require restarting shell) 
+pacman -Syu 
+# After restarting 
+pacman -Su 
+# Install 64-bit toolchain and build utilities 
+pacman -S mingw-w64-x86_64-gcc \ 
+          mingw-w64-x86_64-gcc-fortran \ 
+          mingw-w64-x86_64-cmake \ 
+          mingw-w64-x86_64-ninja 
+``` 
+Add the folder `C:\msys64\mingw64\bin` to your system PATH (for use in `cmd.exe`).
 
-### 3. Build Instructions
+### 2. Clone and Build OASES 
+Open a regular `cmd.exe` and run: 
+```cmd 
+:: Clone the repository 
+git clone https://github.com/raphaelvdumas/OASES 
+cd OASES 
 
-#### For Windows 64-bit:
-```bash
-cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran
-cmake --build build
-cmake --install build
-```
+:: Configure with Ninja and MinGW compilers 
+cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran 
+:: Build and install 
+cmake --build build 
+cmake --install build 
+``` 
 
-#### For Windows 32-bit:
-```bash
-cmake -G Ninja -B build -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc \
-                            -DCMAKE_Fortran_COMPILER=i686-w64-mingw32-gfortran
-cmake --build build
-cmake --install build
-```
-### 4. Output
-After installation, a `release/` folder will contain the final executables with the DLL dependencies automatically copied.
-
-
+### 3. Result 
+- The executables and required DLLs will be placed (automatically) in the `./release/Oases-3.1-Windows64/bin` folder. 
+- You can now copy the `Oases-3.1-Windows64` folder to any compatible system and run OASES by adding the `bin` folder to the environment variables.
