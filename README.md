@@ -33,10 +33,7 @@ pacman -Syu
 # After restarting 
 pacman -Su 
 # Install 64-bit toolchain and build utilities 
-pacman -S mingw-w64-x86_64-gcc \ 
-          mingw-w64-x86_64-gcc-fortran \ 
-          mingw-w64-x86_64-cmake \ 
-          mingw-w64-x86_64-ninja 
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja 
 ``` 
 Add the folder `C:\msys64\mingw64\bin` to your system PATH (for use in `cmd.exe`).
 
