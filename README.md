@@ -2,19 +2,19 @@
 
 [OASES](https://tlo.mit.edu/technologies/oases-software-modeling-seismo-acoustic-propagation-horizontally-stratified-waveguides) is a general-purpose computer code developed by the [Massachusetts Institute of Technology](http://www.mit.edu/) for modeling seismo-acoustic propagation in horizontally stratified waveguides. It uses wavenumber integration combined with the Direct Global Matrix solution technique.
 
-**I ran into many issues installing the base package on Windows, so I created a portable, Windows-friendly edition of OASES to make it easier for others.**
+**I ran into many issues installing the base package on Windows and Ubuntu, so I created a portable, OS-friendly edition of OASES to make it easier for others.**
 
 ## Using OASES Portable Edition
 
-For ease of use, you can run OASES 3.1 directly on Windows by using the portable edition. Follow these steps:
+For ease of use, you can run OASES 3.1 directly on Windows or Ubuntu by using the portable edition. Follow these steps:
 
-1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.0). Choose the version corresponding to your operating system (32-bit or 64-bit).
+1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.0). Choose the version corresponding to your operating system (64-bit Linux or Windows).
    
 2. _Extract_ the archive to a folder of your choice.
 
 3. _Update your PATH environment variable_ to include the `bin` folder from the extracted folder. 
 
-This allows you to run any OASES module directly from `cmd` or `PowerShell` (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/OASES/blob/master/OASES%203.1%20-%20User%20Guide.pdf).
+This allows you to run any OASES module directly (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/OASES/blob/master/OASES%203.1%20-%20User%20Guide.pdf) (`cmd.exe` on Windows or the regular terminal on Ubuntu).
 
 **Warning**: For Windows, this portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
 
