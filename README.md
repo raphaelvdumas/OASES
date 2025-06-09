@@ -20,40 +20,60 @@ This allows you to run any OASES module directly from `cmd` or `PowerShell` (e.g
 
 _Last successful run: March, 2025_
 
-## Building OASES Portable Edition (x64) on Windows 11 
-You can build OASES using **MSYS2** on **Windows 11** with the 64-bit GCC and Fortran toolchain. 
+## Building OASES Portable Edition (x64)
 
-### 1. Install MSYS2 and Required Tools 
-- [Download MSYS2](https://www.msys2.org/) and install it. 
-- Open the **MSYS2 MINGW64** shell. 
-- Update the package manager and install required tools: 
-```bash 
-# First-time update (may require restarting shell) 
-pacman -Syu 
-# After restarting 
-pacman -Su 
-# Install 64-bit toolchain and build utilities 
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja 
-``` 
-Add the folder `C:\msys64\mingw64\bin` to your system PATH (for use in `cmd.exe`).
+OASES can be built on **Windows 11** (using MSYS2) or **Ubuntu 24.04 (Noble Numbat)** with the 64-bit GCC and Fortran toolchain.
 
-### 2. Clone and Build OASES 
-Open a regular `cmd.exe` and run: 
-```cmd 
-:: Clone the repository 
-git clone https://github.com/raphaelvdumas/OASES 
-cd OASES 
+---
 
-:: Configure with Ninja and MinGW compilers 
-cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran 
-:: Build and install 
-cmake --build build 
-cmake --install build 
-``` 
+### 1. Install Required Tools
 
-### 3. Result 
-- The executables and required DLLs will be placed (automatically) in the `./release/Oases-3.1-Windows64/bin` folder. 
-- You can now copy the `Oases-3.1-Windows64` folder to any compatible system and run OASES by adding the `bin` folder to the environment variables.
+#### On Windows 11 (Using MSYS2)
+1. [Download and install MSYS2](https://www.msys2.org/).
+2. Open the **MSYS2 MINGW64** shell.
+3. Run the following commands:
+
+```bash
+# Update package database and core tools
+pacman -Syu   # If prompted, close and reopen the shell
+
+# After restart, complete the update
+pacman -Su
+
+# Install the 64-bit toolchain and build utilities
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
+```
+
+4. Add the following path to your system environment variables (`PATH`), for use in `cmd.exe`:
+```
+C:\msys64\mingw64\bin
+```
+
+#### On Ubuntu 24.04
+Open a terminal and run:
+```bash
+# Update package list and upgrade existing packages
+sudo apt update && sudo apt upgrade -y
+
+# Install build-essential tools, Fortran, CMake, Ninja, and X11 support
+sudo apt install build-essential cmake git gfortran ninja-build libx11-dev
+```
+
+### 2. Clone and Build OASES
+Run the following commands in your terminal (`cmd.exe` on Windows or the regular terminal on Ubuntu):
+```bash
+git clone https://github.com/raphaelvdumas/OASES
+cd OASES
+
+cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran
+cmake --build build
+cmake --install build
+```
+
+### 3. Result
+- The compiled binaries and necessary libraries will be placed in the `./release/` folder.
+- You can copy the `Oases-3.1-Windows64` or `Oases-3.1-Linux64` folder to another compatible system.
+- To run OASES from anywhere, add the `bin` folder inside the release directory to your system `PATH`.
 
 _Last successful build: June, 2025_
 
