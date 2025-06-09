@@ -8,7 +8,7 @@
 
 For ease of use, you can run OASES 3.1 directly on Windows by using the portable edition. Follow these steps:
 
-1. _Download_ the portable edition from the release section. Choose the version corresponding to your operating system (32-bit or 64-bit).
+1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.0). Choose the version corresponding to your operating system (32-bit or 64-bit).
    
 2. _Extract_ the archive to a folder of your choice.
 
@@ -16,7 +16,7 @@ For ease of use, you can run OASES 3.1 directly on Windows by using the portable
 
 This allows you to run any OASES module directly from `cmd` or `PowerShell` (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/OASES/blob/master/OASES%203.1%20-%20User%20Guide.pdf).
 
-**Warning**: This portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
+**Warning**: For Windows, this portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
 
 _Last successful run: March, 2025_
 
