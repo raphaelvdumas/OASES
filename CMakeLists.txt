@@ -55,7 +55,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         install(CODE "
             execute_process(
                 COMMAND ${CMAKE_COMMAND} -E copy
-                \"C:/msys64/mingw${NBITS}/${EACH_DLL}\" 
+                \"C:/msys64/mingw${NBITS}/bin/${EACH_DLL}\" 
                 \"${CMAKE_INSTALL_PREFIX}/bin/${EACH_DLL}\"
             )
         ")
