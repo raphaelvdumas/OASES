@@ -1,30 +1,81 @@
 # oases-public
 
-[OASES](https://tlo.mit.edu/technologies/oases-software-modeling-seismo-acoustic-propagation-horizontally-stratified-waveguides) is a general-purpose computer code developed by the [Massachusetts Institute of Technology](http://www.mit.edu/) for modeling seismo-acoustic propagation in horizontally stratified waveguides. It uses wavenumber integration combined with the Direct Global Matrix solution technique.
+[OASES](https://tlo.mit.edu/technologies/oases-software-modeling-seismo-acoustic-propagation-horizontally-stratified-waveguides) is a software package from [MIT](http://www.mit.edu/) for modeling seismo-acoustic propagation.
 
-**I ran into many issues installing the base package on Windows and Ubuntu, so I created a portable, OS-friendly edition of OASES to make it easier for others.**
+> **OASES (range-independent, publicly available)**  
+> The [base package](https://oceanai.mit.edu/lamss/pmwiki/pmwiki.php?n=Site.Oases) uses wavenumber integration with the Direct Global Matrix solution technique in horizontally stratified waveguides for range-independent environments only.
 
-## Using OASES Portable Edition
+> **C-SNAP (range-dependent, publicly available)**  
+> Included in this installation, [C-SNAP](https://oceanai.mit.edu/lamss/pmwiki/pmwiki.php?n=Site.Csnap) uses normal mode theory to solve range-dependent acoustic field problems.
 
-For ease of use, you can run OASES 3.1 directly on Windows or Ubuntu by using the portable edition. Follow these steps:
+**I ran into many issues installing the base package on Windows and Ubuntu, so I created a friendly build of OASES to make it easier for others.**
 
-1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/oases-public/releases/tag/v3.1.1). Choose the version corresponding to your operating system (64-bit Linux or Windows).
-   
-2. _Extract_ the archive to a folder of your choice.
+## Roadmap
 
-3. _Update your PATH environment variable_ to include the `bin` folder from the extracted folder. 
+This table summarizes the support status for different components across platforms.
 
-This allows you to run any OASES module directly (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/oases-public/blob/master/OASES%203.1%20-%20User%20Guide.pdf) (`cmd.exe` on Windows or the regular terminal on Ubuntu).
+<table>
+<tr>
+  <td style="vertical-align: top; padding-right: 20px;">
 
-**Warning**: For Windows, this portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
+| Component  | Linux 64-bit | Windows 64-bit |
+|------------|:------------:|:--------------:|
+| **oasi**   | ✅           | ✅             |
+| **oasn**   | ✅           | ✅             |
+| **oasp**   | ✅           | ✅             |
+| **oasr**   | ✅           | ✅             |
+| **oass**   | ✅           | ✅             |
+| **oassp**  | ✅           | ✅             |
+| **oast**   | ✅           | ✅             |
+| **oasp3**  | ✅           | ✅             |
+| **pp**     | ✅           | ✅             |
+| **c-snap** | ✅           | ✅             |
 
-_Last successful run: March, 2025_
+  </td>
+  <td style="vertical-align: top; padding-left: 20px;">
 
-## Building OASES Portable Edition (x64)
+| Component   | Linux 64-bit | Windows 64-bit |
+|-------------|:------------:|:--------------:|
+| **mfp**    | ✅           | ✅             |
+| **munkgen**| ✅           | ✅             |
+| **nrmcov** | ✅           | ✅             |
+| **addcov** | ✅           | ✅             |
+| **coher**  | ✅           | ✅             |
+| **trfsplit**| ✅          | ✅             |
+| **trftoascii**| ✅        | ✅             |
+
+  </td>
+  <td style="vertical-align: top; padding-left: 20px;">
+
+| Component   | Linux 64-bit | Windows 64-bit |
+|-------------|:------------:|:--------------:|
+| **saccon**   | ✅           | ❌             |
+| **mintopost**| ✅           | ❌             |
+| **mintops**  | ✅           | ❌             |
+| **fipplot**  | ✅           | ❌             |
+| **cplot**    | ✅           | ❌             |
+| **mplot**    | ✅           | ❌             |
+| **mtvplot**  | ✅           | ❌             |
+| **multmtv**  | ✅           | ❌             |
+| **plp2mtv**  | ✅           | ❌             |
+
+  </td>
+</tr>
+</table>
+
+Legend:  
+- ✅ Supported  
+- ❌ Not supported  
+
+**Warning:** Errors may occur. If you encounter any issues, please report them in this repository.
+
+**Note:** On Windows, this repository supports computation only — plotting is not supported due to X11 incompatibility with Windows (which will soon be deprecated with GNOME). Therefore, this version is strictly for computation.  
+
+To visualize results, please use the MATLAB or Python functions available in the `third_party` folder.
+
+## Building OASES (x64)
 
 OASES can be built on **Windows 11** (using MSYS2) or **Ubuntu 24.04 (Noble Numbat)** with the 64-bit GCC and Fortran toolchain.
-
----
 
 ### 1. Install Required Tools
 
@@ -69,13 +120,14 @@ cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran
 cmake --build build
 cmake --install build
 ```
+### 3. Add `bin` Folder to Your PATH
 
-### 3. Result
-- The compiled binaries and necessary libraries will be placed in the `./release/` folder.
-- You can copy the `Oases-3.1-Windows64` or `Oases-3.1-Linux64` folder to another compatible system.
-- To run OASES from anywhere, add the `bin` folder inside the release directory to your system `PATH`.
+To run OASES modules from any location, add the `bin` folder to your system `PATH`. This enables running commands like `oast`, `oasr` (OASES), or `c-snap` (C-SNAP) directly from `cmd.exe` on Windows or the terminal on Ubuntu.
 
-_Last successful build: June, 2025_
+Refer to the official [OASES User Guide](https://github.com/raphaelvdumas/oases-public/blob/master/doc/OASES%203.1%20-%20User%20Guide.pdf) and [C-SNAP User Guide](https://github.com/raphaelvdumas/oases-public/blob/master/doc/C-SNAP%20-%20User%20Guide.pdf) for command details.
+
+_Last successful build: June 2025_
+
 
 ## Notes on Building and Interoperability
 

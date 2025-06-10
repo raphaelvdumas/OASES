@@ -1,0 +1,18 @@
+C    BCOMMON.INC
+
+      LOGICAL EXCH(*)
+
+      REAL ALFA(*), MODAVR(*)
+
+      DOUBLE PRECISION Z0(*), C0(*), Z1(*), C1(*),
+     &                 Z0NRM(*), Z1NRM(*)
+      DOUBLE PRECISION Z0L(*), C0L(*), Z1L(*), C1L(*)
+      DOUBLE PRECISION Z0R(*), C0R(*), Z1R(*), C1R(*)
+      DOUBLE PRECISION Z0LR(*), CE0L(*), CE0R(*)
+      DOUBLE PRECISION Z1LR(*), CE1L(*), CE1R(*)
+
+      DOUBLE PRECISION EK(*)
+      DOUBLE PRECISION ADA(*), SPEED(*), EIGF(*)
+      DOUBLE PRECISION ISO(*), MY(MAXMSH,MODEN)
+      DOUBLE PRECISION A3(*), B3(*), C3(*)
+      DOUBLE PRECISION EE(*), ZZ(*), SSOLD(*)

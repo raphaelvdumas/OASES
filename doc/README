@@ -1,4 +1,0 @@
-To build documentation, type
-> make
-
-You will need: latex, dvips, ps2pdf

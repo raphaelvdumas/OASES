@@ -1,0 +1,15 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+file(GLOB CSNAP_SOURCES *.f)
+list(REMOVE_ITEM CSNAP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etime.f)
+list(REMOVE_ITEM CSNAP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etime_vms.f)
+# list(REMOVE_ITEM CSNAP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/csnapt.f)
+list(REMOVE_ITEM CSNAP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/prdep.f)
+
+add_executable(c-snap csnap.c ${CSNAP_SOURCES})
+target_include_directories(c-snap PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/include
+)
+
+install(TARGETS c-snap DESTINATION)

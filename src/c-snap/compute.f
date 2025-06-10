@@ -1,0 +1,173 @@
+C   COMPUTE.FOR
+
+      SUBROUTINE COMPUT( *,  *,  *,  *,
+     & I, H1N, DRAT, DH0, DSED, DH0SQ,
+     & FRQ, MODQTY,
+     & ADA, SPEED, ISO, MY, C0, Z0, C1, Z1,
+     & ZZ, EK )
+C__________________________________________________________ 
+C                                                          |
+C__________________________________________________________|
+C
+
+      INCLUDE 'param.inc'
+
+      INTEGER  EXTPOL
+
+
+      DOUBLE PRECISION ZZ(NPOINT)
+      DOUBLE PRECISION H0, H1, CC0, CC1, CMIN
+      DOUBLE PRECISION SEDK, DBMN
+      DOUBLE PRECISION MY(MAXMSH,MODEN), ISO(MODEN)
+      DOUBLE PRECISION ADA(NPOINT), SPEED(NPOINT)
+      DOUBLE PRECISION DH0(8), DSED(8), DH0SQ(8)
+      DOUBLE PRECISION FRQ, TWOPI, PI, OMEGA, DRAT
+      DOUBLE PRECISION EIGREF, EIGMIN, EIGMAX, STIFF
+      DOUBLE PRECISION EK(MODEN)
+      DOUBLE PRECISION CON1, CON2, CON3, CON4, CON5, H1N
+      DOUBLE PRECISION C0( * ), Z0( * ), C1( * ), Z1( * )
+
+      COMMON /AB/ BETA(-1:3), SCATT(2), C2S, CC0, CC1, C2
+      COMMON /CONST/ CON1, CON2, CON3, CON4, CON5, SEDK
+      COMMON /FLAGPL/ FIRST, FLAGP, FLAGPU, EXTPOL, CORREC
+      COMMON /G/ H0, H1
+      COMMON /GEN/ EIGREF, EIGMIN, EIGMAX, STIFF
+      COMMON /LUIN/ LUIN, LUWRN, LUCHK
+      COMMON /LUNIT/ LUPLP, LUPLT, LUPRT
+      COMMON /MSHIST/ MH0(8), MSED(8), ICOUNT, USEOLD
+      COMMON /N/ MINMOD, MAXMOD, MODCUT, HBEAM, BPHVEL
+      COMMON /NA/ ND0, ND1, CMIN
+      COMMON /PARAM4/ MESHI, MESHN
+      COMMON /TRIGON/ TWOPI, PI, OMEGA
+
+      INCLUDE 'acommon.inc'
+
+  220 FORMAT(1X,' FINDING APPROXIMATION (NEWTON) FOR MESH ',I2,1X,
+     & '( ',I5,', ',I5,' )',1X,I4,' mode(s)')
+
+
+C     FIND APPROXIMATION WITH BRENT (SEARCH WITHIN AN INTERVAL)
+      CALL ISOBR( I, FRQ, MODQTY,
+     & DH0, DSED, MH0, MSED,
+     & ADA, SPEED, ISO, MY, MAXMSH, MODEN,
+     & C0, Z0, C1, Z1, *9999 )
+
+      IF( I .EQ. MESHI )   THEN
+        CALL FNDVEC( MODQTY, DH0, DSED, MY, ZZ )
+      END IF
+
+      IF( I .EQ. MESHN )    GO TO 4200
+      DO 2600 M= 1, MODQTY
+      MY(I,M)= MY(I,M)/DH0SQ(I)
+ 2600 CONTINUE
+      IF(CORREC .GT. 0.)   THEN
+        DO 2620 M=1,MODQTY
+        DBMN= (M+MINMOD-1) - 0.5D0
+        MY(I,M)=MY(I,M) - ((EIGREF**2
+     &   -(DSIN(DBMN*PI*DH0(I)*.5D0)/DH0(I)*2.D0*DRAT)**2)
+     &   -(EIGREF**2-(DBMN*PI*DRAT)**2))
+ 2620  CONTINUE
+      END IF
+ 2800 CONTINUE
+
+C   LAGRANGE PREDICTION TO NEXT MESH
+      CALL LAGRAN(MODQTY, I, MY, MAXMSH, MODEN, DH0SQ)
+      IP1= I + 1
+
+C     FIND THE SUBSEQUENT APPROXIMATIONS
+C
+      DO 4000   I= IP1, MESHN
+
+      IF(CORREC .GT. 0.)   THEN
+        DO 3000 M=1,MODQTY
+        DBMN= (M+MINMOD-1) - 0.5D0
+        MY(I,M)=MY(I,M) + ((EIGREF**2
+     &   -(DSIN(DBMN*PI*DH0(I)*.5D0)/DH0(I)*2.D0*DRAT)**2)
+     &   -(EIGREF**2-(DBMN*PI*DRAT)**2))
+ 3000  CONTINUE
+      END IF
+      DO 3200 M=1,MODQTY
+      MY(I,M)=MY(I,M)*DH0SQ(I)
+ 3200 CONTINUE
+
+CWRN      IF(FIRST.NE.0.)   WRITE(LUWRN,220) I+ICOUNT, MH0(I), MSED(I),
+CWRN     &                  MODQTY
+      IF((FLAGPU.LT.1.) .AND. (FIRST.NE.0.))
+     &    WRITE(LUPRT,220) I+ICOUNT, MH0(I), MSED(I), MODQTY
+
+       CALL MDIAG(MH0(I),MSED(I),DH0(I),DSED(I),
+     & SPEED,ADA,C0,Z0,C1,Z1)
+
+      CALL NEWTON(*4500,*4600,MY,MAXMSH,MODEN,MODQTY,
+     &            DH0, MH0(I), I, DSED,
+     &            MSED(I), ADA)
+C      IF(MODQTY .EQ. 0)   GO TO 4600
+      IF(MODQTY.LE.0)   THEN
+        WRITE(LUPRT,*)
+     &  ' SUB COMPUT ON RETURN FROM NEWTON: MODQTY=', modqty
+        GO TO 4600
+      END IF
+
+      IF((ICOUNT .EQ. 0) .AND. ( I .EQ. MESHI ))    THEN
+        CALL FNDVEC( MODQTY, DH0, DSED, MY, ZZ )
+      END IF
+
+      IF(I .LT. MESHN)   THEN
+        DO 3400 M=1,MODQTY
+        MY(I,M)=MY(I,M)/DH0SQ(I)
+ 3400  CONTINUE
+
+C      CORRECTION
+       IF(CORREC .GT. 0.)   THEN
+         DO 3600 M=1,MODQTY
+         DBMN= (M+MINMOD-1) - 0.5D0
+         MY(I,M)=MY(I,M) - ((EIGREF**2
+     &   -(DSIN(DBMN*PI*DH0(I)*.5D0)/DH0(I)*2.D0*DRAT)**2)
+     &   -(EIGREF**2-(DBMN*PI*DRAT)**2))
+ 3600   CONTINUE
+       END IF
+
+C      PREDICTION
+       CALL LAGRAN(MODQTY, I, MY, MAXMSH, MODEN, DH0SQ)
+      END IF
+
+ 4000 CONTINUE
+ 4200 CONTINUE
+
+      I=MESHN
+      DO 4300   M=1,MODQTY
+      MY(I,M)=MY(I,M)/DH0SQ(I)
+ 4300 CONTINUE
+      IF(CORREC .GT. 0.)   THEN
+        DO 4400   M=1,MODQTY
+        DBMN= (M+MINMOD-1) - 0.5D0
+        MY(I,M)=MY(I,M) - ((EIGREF**2
+     &  -(DSIN(DBMN*PI*DH0(I)*.5D0)/DH0(I)*2.D0*DRAT)**2)
+     &  -(EIGREF**2-(DBMN*PI*DRAT)**2))
+ 4400   CONTINUE
+      END IF
+      CALL ACCRCY(I, EK, MY, MAXMSH, MODEN, NPOINT,
+     & MODQTY, MINMOD, MAXMOD, H1N,
+     & DH0, DH0SQ, DSED, *2800, *7000 )
+
+
+      IF( I+ICOUNT .NE. MESHI )   THEN
+C       Setting arrays for computing the eigenfunction
+        CALL MDIAG(AMH0(ARIGHT)-1, AMSED(ARIGHT), ADH0(ARIGHT),
+     &  ADSED(ARIGHT), SPEED, ADA, C0, Z0, C1, Z1)
+      END IF
+
+      RETURN
+
+ 4500 CONTINUE
+      WRITE(LUPRT,*) ' SUB COMPUT, LAB 4500 '
+      RETURN 1
+
+ 4600 CONTINUE
+      WRITE(LUPRT,*) ' SUB COMPUT, LAB 4600 '
+      RETURN 2
+ 7000 CONTINUE
+      WRITE(LUPRT,*) ' SUB COMPUT, LAB 7000 '
+      RETURN 3
+ 9999 RETURN 4
+      END
