@@ -1,4 +1,4 @@
-# OASES
+# oases-public
 
 [OASES](https://tlo.mit.edu/technologies/oases-software-modeling-seismo-acoustic-propagation-horizontally-stratified-waveguides) is a general-purpose computer code developed by the [Massachusetts Institute of Technology](http://www.mit.edu/) for modeling seismo-acoustic propagation in horizontally stratified waveguides. It uses wavenumber integration combined with the Direct Global Matrix solution technique.
 
@@ -8,13 +8,13 @@
 
 For ease of use, you can run OASES 3.1 directly on Windows or Ubuntu by using the portable edition. Follow these steps:
 
-1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.1). Choose the version corresponding to your operating system (64-bit Linux or Windows).
+1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/oases-public/releases/tag/v3.1.1). Choose the version corresponding to your operating system (64-bit Linux or Windows).
    
 2. _Extract_ the archive to a folder of your choice.
 
 3. _Update your PATH environment variable_ to include the `bin` folder from the extracted folder. 
 
-This allows you to run any OASES module directly (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/OASES/blob/master/OASES%203.1%20-%20User%20Guide.pdf) (`cmd.exe` on Windows or the regular terminal on Ubuntu).
+This allows you to run any OASES module directly (e.g., `oast`, `oasr`, etc.) using the syntax provided in the [official documentation](https://github.com/raphaelvdumas/oases-public/blob/master/OASES%203.1%20-%20User%20Guide.pdf) (`cmd.exe` on Windows or the regular terminal on Ubuntu).
 
 **Warning**: For Windows, this portable edition is compute-only. You won’t be able to plot results directly. To plot your results, use the functions provided in the `third_party` folder with MATLAB or Python.
 
@@ -62,8 +62,8 @@ sudo apt install build-essential cmake git gfortran ninja-build libx11-dev
 ### 2. Clone and Build OASES
 Run the following commands in your terminal (`cmd.exe` on Windows or the regular terminal on Ubuntu):
 ```bash
-git clone https://github.com/raphaelvdumas/OASES
-cd OASES
+git clone https://github.com/raphaelvdumas/oases-public
+cd oases-public
 
 cmake -G Ninja -B build -DCMAKE_C_COMPILER=gcc -DCMAKE_Fortran_COMPILER=gfortran
 cmake --build build
@@ -83,7 +83,7 @@ _Last successful build: June, 2025_
 > The project can be built on Ubuntu using all default plotting functions without modifications.
 
 > **Replaced Unix Shells (Windows Compatibility)**  
-> Previously included Unix-compatible shells in the `bin` folder (see [historical v3.1.0 release](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.0-historical))  
+> Previously included Unix-compatible shells in the `bin` folder (see [historical v3.1.0 release](https://github.com/raphaelvdumas/oases-public/releases/tag/v3.1.0-historical))  
 > have been _replaced by a C script_ to ensure _Fortran-C interoperability_.
 
 > **Environment Variable Management**  
