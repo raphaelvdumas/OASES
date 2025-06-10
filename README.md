@@ -8,7 +8,7 @@
 
 For ease of use, you can run OASES 3.1 directly on Windows or Ubuntu by using the portable edition. Follow these steps:
 
-1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.0). Choose the version corresponding to your operating system (64-bit Linux or Windows).
+1. _Download_ the portable edition from the [release section](https://github.com/raphaelvdumas/OASES/releases/tag/v3.1.1). Choose the version corresponding to your operating system (64-bit Linux or Windows).
    
 2. _Extract_ the archive to a folder of your choice.
 
